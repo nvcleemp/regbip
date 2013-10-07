@@ -1,1 +1,9 @@
+# library files
 /shared/
+
+# build files
+/build/
+/dist/
+
+# NetBeans project
+/nbproject/
