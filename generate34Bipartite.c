@@ -313,7 +313,7 @@ int getNumberOfVerticesAtDistance2(int v){
     bitv set = EMPTY_SET;
     bitv_size setSize;
     
-    for(i = 0; i < MAXNLEFT; i++){
+    for(i = 0; i < leftVertexCount; i++){
         if(CONTAINS(rightNeighbourhood[v], i)){
             ADD_ALL(set, leftNeighbourhood[i]);
         } 
