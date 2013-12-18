@@ -10,6 +10,8 @@
  * degree 4 for each finished graph.
  */
 
+#define WITH_PROFILING
+
 #include "generate34Bipartite.h"
 
 // debugging methods
@@ -294,6 +296,13 @@ boolean doesLastVertexLieInOrbitOfSmallestLabel(bitv maxColouredVertices){
 
     
     generatorsDetermined[rightVertexCount] = TRUE;
+#ifdef WITH_PROFILING
+    if(smallestLabelOrbitLastVertex <= smallestOtherRightVertexLabel){
+        nautyAccepted++;
+    } else {
+        nautyRejected++;
+    }
+#endif
     return smallestLabelOrbitLastVertex <= smallestOtherRightVertexLabel;
 }
 
@@ -329,7 +338,11 @@ int getNumberOfNeighboursWithDegree(int v, int deg){
 /* Check whether vertex at position maxReducibleVertex is canonical
  */
 boolean isLastVertexCanonical(){
-    int i, maxCount;
+    int i, maxCount; 
+    
+#ifdef WITH_PROFILING
+    canonicityCalls++;
+#endif
     
     //this set holds the vertices that can be the canonical vertex
     bitv maxVertices = EMPTY_SET;
@@ -350,6 +363,9 @@ boolean isLastVertexCanonical(){
     for(i = 0; i < rightVertexCount-1; i++){
         int iColour = getNumberOfNeighboursWithDegree(i, 4);
         if(iColour > colour){
+#ifdef WITH_PROFILING
+            colour1Rejected++;
+#endif
             return FALSE;
         } else if(iColour == colour){
             maxCount++;
@@ -357,6 +373,9 @@ boolean isLastVertexCanonical(){
         }
     }
     if(maxCount==0){
+#ifdef WITH_PROFILING
+        colour1Accepted++;
+#endif
         return TRUE;
     }
     
@@ -367,6 +386,9 @@ boolean isLastVertexCanonical(){
         if(CONTAINS(maxVertices, i)){
             int iColour = getNumberOfNeighboursWithDegree(i, 3);
             if(iColour > colour){
+#ifdef WITH_PROFILING
+                colour2Rejected++;
+#endif
                 return FALSE;
             } else if(iColour == colour){
                 maxCount++;
@@ -376,6 +398,9 @@ boolean isLastVertexCanonical(){
         }
     }
     if(maxCount==0) {
+#ifdef WITH_PROFILING
+        colour2Accepted++;
+#endif
         return TRUE;
     }
     
@@ -386,6 +411,9 @@ boolean isLastVertexCanonical(){
         if(CONTAINS(maxVertices, i)){
             int iColour = getNumberOfNeighboursWithDegree(i, 2);
             if(iColour > colour){
+#ifdef WITH_PROFILING
+                colour3Rejected++;
+#endif
                 return FALSE;
             } else if(iColour == colour){
                 maxCount++;
@@ -395,6 +423,9 @@ boolean isLastVertexCanonical(){
         }
     }
     if(maxCount==0) {
+#ifdef WITH_PROFILING
+        colour3Accepted++;
+#endif
         return TRUE;
     }
     
@@ -405,6 +436,9 @@ boolean isLastVertexCanonical(){
         if(CONTAINS(maxVertices, i)){
             int iColour = getNumberOfVerticesAtDistance2(i);
             if(iColour > colour){
+#ifdef WITH_PROFILING
+                colour4Rejected++;
+#endif
                 return FALSE;
             } else if(iColour == colour){
                 maxCount++;
@@ -414,6 +448,9 @@ boolean isLastVertexCanonical(){
         }
     }
     if(maxCount==0) {
+#ifdef WITH_PROFILING
+        colour4Accepted++;
+#endif
         return TRUE;
     }
     
@@ -595,6 +632,22 @@ int main(int argc, char** argv) {
 
     startGeneration(9, 12);
     fprintf(stderr, "Found %lu graphs.\n", graphCount);
+    
+#ifdef WITH_PROFILING
+    
+    fprintf(stderr, "Canonicity calls: %10llu\n\n", canonicityCalls);
+    fprintf(stderr, "C1      rejected: %10llu\n", colour1Rejected);
+    fprintf(stderr, "        accepted: %10llu\n", colour1Accepted);
+    fprintf(stderr, "C2      rejected: %10llu\n", colour2Rejected);
+    fprintf(stderr, "        accepted: %10llu\n", colour2Accepted);
+    fprintf(stderr, "C3      rejected: %10llu\n", colour3Rejected);
+    fprintf(stderr, "        accepted: %10llu\n", colour3Accepted);
+    fprintf(stderr, "C4      rejected: %10llu\n", colour4Rejected);
+    fprintf(stderr, "        accepted: %10llu\n", colour4Accepted);
+    fprintf(stderr, "nauty   rejected: %10llu\n", nautyRejected);
+    fprintf(stderr, "        accepted: %10llu\n", nautyAccepted);
+
+#endif
     
     return (EXIT_SUCCESS);
 }

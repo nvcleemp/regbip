@@ -59,6 +59,20 @@ int vertex3SetOrbitCount[MAXNRIGHT];
 
 unsigned long int graphCount = 0;
 
+#ifdef WITH_PROFILING
+unsigned long long int canonicityCalls = 0;
+unsigned long long int colour1Rejected = 0;
+unsigned long long int colour1Accepted = 0;
+unsigned long long int colour2Rejected = 0;
+unsigned long long int colour2Accepted = 0;
+unsigned long long int colour3Rejected = 0;
+unsigned long long int colour3Accepted = 0;
+unsigned long long int colour4Rejected = 0;
+unsigned long long int colour4Accepted = 0;
+unsigned long long int nautyRejected = 0;
+unsigned long long int nautyAccepted = 0;
+#endif
+
 
 void outputMulticode();
 
