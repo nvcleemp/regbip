@@ -379,12 +379,12 @@ boolean isLastVertexCanonical(){
         return TRUE;
     }
     
-    colour = getNumberOfNeighboursWithDegree(rightVertexCount-1, 3);
+    colour = getNumberOfVerticesAtDistance2(rightVertexCount-1);
     
     maxCount = 0;
     for(i = 0; i < rightVertexCount-1; i++){
         if(CONTAINS(maxVertices, i)){
-            int iColour = getNumberOfNeighboursWithDegree(i, 3);
+            int iColour = getNumberOfVerticesAtDistance2(i);
             if(iColour > colour){
 #ifdef WITH_PROFILING
                 colour2Rejected++;
@@ -404,12 +404,12 @@ boolean isLastVertexCanonical(){
         return TRUE;
     }
     
-    colour = getNumberOfNeighboursWithDegree(rightVertexCount-1, 2);
+    colour = getNumberOfNeighboursWithDegree(rightVertexCount-1, 3);
     
     maxCount = 0;
     for(i = 0; i < rightVertexCount-1; i++){
         if(CONTAINS(maxVertices, i)){
-            int iColour = getNumberOfNeighboursWithDegree(i, 2);
+            int iColour = getNumberOfNeighboursWithDegree(i, 3);
             if(iColour > colour){
 #ifdef WITH_PROFILING
                 colour3Rejected++;
@@ -429,12 +429,12 @@ boolean isLastVertexCanonical(){
         return TRUE;
     }
     
-    colour = getNumberOfVerticesAtDistance2(rightVertexCount-1);
+    colour = getNumberOfNeighboursWithDegree(rightVertexCount-1, 2);
     
     maxCount = 0;
     for(i = 0; i < rightVertexCount-1; i++){
         if(CONTAINS(maxVertices, i)){
-            int iColour = getNumberOfVerticesAtDistance2(i);
+            int iColour = getNumberOfNeighboursWithDegree(i, 2);
             if(iColour > colour){
 #ifdef WITH_PROFILING
                 colour4Rejected++;
