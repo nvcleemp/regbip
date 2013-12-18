@@ -1,5 +1,6 @@
 # library files
 /shared/
+nauty
 
 # build files
 /build/
