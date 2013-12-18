@@ -339,7 +339,7 @@ int getCombinedNeighbourhoodColour(int v){
     //this colour is 16*d_4 + 4*d_3 + d_2, where d_i is the number of neighbours with degree i
     int i, colour = 0;
     
-    for(i = 0; i < MAXNLEFT; i++){
+    for(i = 0; i < leftVertexCount; i++){
         if(CONTAINS(rightNeighbourhood[v], i)){
             if(leftVertexDegree[i]==4){
                 colour+=16;
