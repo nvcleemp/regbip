@@ -65,10 +65,6 @@ unsigned long long int colour1Rejected = 0;
 unsigned long long int colour1Accepted = 0;
 unsigned long long int colour2Rejected = 0;
 unsigned long long int colour2Accepted = 0;
-unsigned long long int colour3Rejected = 0;
-unsigned long long int colour3Accepted = 0;
-unsigned long long int colour4Rejected = 0;
-unsigned long long int colour4Accepted = 0;
 unsigned long long int nautyRejected = 0;
 unsigned long long int nautyAccepted = 0;
 #endif
@@ -91,6 +87,8 @@ boolean doesLastVertexLieInOrbitOfSmallestLabel(bitv maxColouredVertices);
 int getNumberOfVerticesAtDistance2(int v);
 
 int getNumberOfNeighboursWithDegree(int v, int deg);
+
+int getCombinedNeighbourhoodColour(int v);
 
 boolean isLastVertexCanonical();
 

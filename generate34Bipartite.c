@@ -335,10 +335,28 @@ int getNumberOfNeighboursWithDegree(int v, int deg){
     return count;
 }
 
+int getCombinedNeighbourhoodColour(int v){
+    //this colour is 16*d_4 + 4*d_3 + d_2, where d_i is the number of neighbours with degree i
+    int i, colour = 0;
+    
+    for(i = 0; i < MAXNLEFT; i++){
+        if(CONTAINS(rightNeighbourhood[v], i)){
+            if(leftVertexDegree[i]==4){
+                colour+=16;
+            } else if(leftVertexDegree[i]==3){
+                colour+=4;
+            } else if(leftVertexDegree[i]==2){
+                colour++;
+            }
+        } 
+    }
+    return colour;
+}
+
 /* Check whether vertex at position maxReducibleVertex is canonical
  */
 boolean isLastVertexCanonical(){
-    int i, maxCount; 
+    int i, maxCount;
     
 #ifdef WITH_PROFILING
     canonicityCalls++;
@@ -357,11 +375,11 @@ boolean isLastVertexCanonical(){
 #endif
     ///////////////////////////////////////
     
-    int colour = getNumberOfNeighboursWithDegree(rightVertexCount-1, 4);
+    int colour = getCombinedNeighbourhoodColour(rightVertexCount-1);
     
     maxCount = 0;
     for(i = 0; i < rightVertexCount-1; i++){
-        int iColour = getNumberOfNeighboursWithDegree(i, 4);
+        int iColour = getCombinedNeighbourhoodColour(i);
         if(iColour < colour){
 #ifdef WITH_PROFILING
             colour1Rejected++;
@@ -374,7 +392,7 @@ boolean isLastVertexCanonical(){
     }
     if(maxCount==0){
 #ifdef WITH_PROFILING
-        colour1Accepted++;
+            colour1Accepted++;
 #endif
         return TRUE;
     }
@@ -399,57 +417,7 @@ boolean isLastVertexCanonical(){
     }
     if(maxCount==0) {
 #ifdef WITH_PROFILING
-        colour2Accepted++;
-#endif
-        return TRUE;
-    }
-    
-    colour = getNumberOfNeighboursWithDegree(rightVertexCount-1, 3);
-    
-    maxCount = 0;
-    for(i = 0; i < rightVertexCount-1; i++){
-        if(CONTAINS(maxVertices, i)){
-            int iColour = getNumberOfNeighboursWithDegree(i, 3);
-            if(iColour < colour){
-#ifdef WITH_PROFILING
-                colour3Rejected++;
-#endif
-                return FALSE;
-            } else if(iColour == colour){
-                maxCount++;
-            } else {
-                REMOVE(maxVertices, i);
-            }
-        }
-    }
-    if(maxCount==0) {
-#ifdef WITH_PROFILING
-        colour3Accepted++;
-#endif
-        return TRUE;
-    }
-    
-    colour = getNumberOfNeighboursWithDegree(rightVertexCount-1, 2);
-    
-    maxCount = 0;
-    for(i = 0; i < rightVertexCount-1; i++){
-        if(CONTAINS(maxVertices, i)){
-            int iColour = getNumberOfNeighboursWithDegree(i, 2);
-            if(iColour < colour){
-#ifdef WITH_PROFILING
-                colour4Rejected++;
-#endif
-                return FALSE;
-            } else if(iColour == colour){
-                maxCount++;
-            } else {
-                REMOVE(maxVertices, i);
-            }
-        }
-    }
-    if(maxCount==0) {
-#ifdef WITH_PROFILING
-        colour4Accepted++;
+            colour2Accepted++;
 #endif
         return TRUE;
     }
@@ -632,7 +600,7 @@ int main(int argc, char** argv) {
 
     startGeneration(9, 12);
     fprintf(stderr, "Found %lu graphs.\n", graphCount);
-    
+
 #ifdef WITH_PROFILING
     
     fprintf(stderr, "Canonicity calls: %10llu\n\n", canonicityCalls);
@@ -640,10 +608,6 @@ int main(int argc, char** argv) {
     fprintf(stderr, "        accepted: %10llu\n", colour1Accepted);
     fprintf(stderr, "C2      rejected: %10llu\n", colour2Rejected);
     fprintf(stderr, "        accepted: %10llu\n", colour2Accepted);
-    fprintf(stderr, "C3      rejected: %10llu\n", colour3Rejected);
-    fprintf(stderr, "        accepted: %10llu\n", colour3Accepted);
-    fprintf(stderr, "C4      rejected: %10llu\n", colour4Rejected);
-    fprintf(stderr, "        accepted: %10llu\n", colour4Accepted);
     fprintf(stderr, "nauty   rejected: %10llu\n", nautyRejected);
     fprintf(stderr, "        accepted: %10llu\n", nautyAccepted);
 
