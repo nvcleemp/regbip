@@ -16,6 +16,7 @@ typedef unsigned int bitv_size;
 #define EMPTY_SET 0U
 #define SINGLETON(el) (ONE << (el))
 #define CONTAINS(s, el) ((s) & SINGLETON(el))
+#define CONTAINS_ALL(s, elements) (((s) & (elements)) == (elements))
 #define ADD(s, el) ((s) |= SINGLETON(el))
 #define ADD_ALL(s, elements) ((s) |= (elements))
 //these will only work of the element is actually in the set
